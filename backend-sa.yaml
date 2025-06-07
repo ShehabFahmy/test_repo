@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: backend-sa
+  namespace: todo-app
+  annotations:
+    eks.amazonaws.com/role-arn: example-role
