@@ -10,6 +10,26 @@ spec:
     - Ingress
 
 ---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-ingress-to-frontend
+  namespace: todo-app
+spec:
+  podSelector:
+    matchLabels:
+      app: frontend
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - ipBlock:
+            cidr: 0.0.0.0/0   # All external sources
+      ports:
+        - protocol: TCP
+          port: 80            # Adjust to your frontend's container port
+
+---
 # Allow frontend -> backend
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
