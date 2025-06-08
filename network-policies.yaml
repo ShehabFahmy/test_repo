@@ -50,22 +50,23 @@ spec:
           port: 3001
 
 ---
-# Allow backend -> internet (DynamoDB)
+# Allow backend -> mongo
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-backend-egress
+  name: allow-backend-to-mongo
   namespace: todo-app
 spec:
   podSelector:
     matchLabels:
-      app: backend
+      app: mongo
   policyTypes:
-    - Egress
-  egress:
-    - to:
-        - ipBlock:
-            cidr: 0.0.0.0/0
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: backend
       ports:
         - protocol: TCP
-          port: 443
+          port: 27017
